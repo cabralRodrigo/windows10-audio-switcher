@@ -1,0 +1,37 @@
+﻿<Window x:Class="AudioSwitcher.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:converters="clr-namespace:AudioSwitcher.Converters"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="ToolWindow"
+        ShowInTaskbar="False"
+        Visibility="Hidden"
+        Height="1" Width="1">
+
+    <Window.Resources>
+        <converters:StateToIconConverter x:Key="StateToImageConverter" />
+        <converters:StateToTooltipConverter x:Key="StateToTooltipConverter" />
+        <ContextMenu x:Key="TaskBarIconMenu">
+            <MenuItem Header="Inicializar com Windows"  Command="{Binding AddAppStartupCommand}"/>
+            <MenuItem Header="Não Inicializar com Windows" Command="{Binding RemoverAppStartupCommand}"/>
+            <Separator/>
+            <MenuItem Header="Sair" Command="{Binding SairCommand}"/>
+        </ContextMenu>
+    </Window.Resources>
+    
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+
+        <tb:TaskbarIcon 
+            Visibility="Visible"
+            IconSource="{Binding State, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StateToImageConverter}}"
+            DoubleClickCommand="{Binding SwitchCommand}"
+            ToolTipText="{Binding State, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StateToTooltipConverter}}"
+            ContextMenu="{StaticResource TaskBarIconMenu}"
+        />
+    </StackPanel>
+</Window>
